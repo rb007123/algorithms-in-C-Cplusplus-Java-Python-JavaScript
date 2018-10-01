@@ -35,7 +35,6 @@ namespace segmentTrees
 	};
 }
 
-//.cpp file code:
 
 namespace segmentTrees
 {
