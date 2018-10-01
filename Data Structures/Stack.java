@@ -1,68 +1,103 @@
+#include <vector>
+#include <iostream>
 
-public class Stack {
+class Stack
+{
 
-	private int[] data;
-	private int tos = -1;// top of stackk 
+private:
+	std::vector<int> data;
+	int tos = -1; 
 
-	public Stack(int capacity) {
-		this.data = new int[capacity];
-	}
+public:
+	Stack(int capacity);
 
-	public Stack()// contructor chaining
+	Stack(); 
+
+	virtual int top();
+
+	virtual int pop(); 
+
+	virtual void push(int item);
+
+	virtual bool isEmpty();
+
+	virtual void display();
+
+	virtual int size();
+
+};
+
+
+
+Stack::Stack(int capacity)
+{
+	this->data = std::vector<int>(capacity);
+}
+
+Stack::Stack() : Stack(5)
+{
+}
+
+int Stack::top()
+{
+	if (this->tos == -1)
 	{
-		this(5);
+		std::wcout << L"Stack UnderFlow" << std::endl;
+		return -1;
 	}
+	int value = this->data[this->tos];
+	return value;
+}
 
-	public int top()// tells element at tos
+int Stack::pop()
+{
+
+	if (this->tos == -1)
 	{
-		if (this.tos == -1) {
-			System.out.println("Stack UnderFlow");
-			return -1;
-		}
-		int value = this.data[this.tos]; 
-		return value;
+		std::wcout << L"Stack UnderFlow" << std::endl;
+		return -1;
 	}
+	int value = this->data[this->tos];
+	this->data[this->tos] = 0;
+	this->tos--;
+	return value;
 
-	public int pop()// element to delete
+}
+
+void Stack::push(int item)
+{
+	
+	if (this->tos == this->data.size() - 1)
 	{
-		// check for underflow
-		if (this.tos == -1) {
-			System.out.println("Stack UnderFlow");
-			return -1;
-		}
-		int value = this.data[this.tos];
-		this.data[this.tos] = 0;
-		this.tos--;
-		return value;
-
+		std::wcout << L"Stack OverFlow" << std::endl;
+		return;
 	}
+	this->tos++;
+	this->data[this->tos] = item;
+}
 
-	public void push(int item) {
-		// check for overflow
-		if (this.tos == this.data.length - 1) {
-			System.out.println("Stack OverFlow");
-			return;
-		}
-		this.tos++;
-		this.data[this.tos] = item;
+bool Stack::isEmpty()
+{
+	if (this->size() == 0)
+	{
+		return true;
 	}
-
-	public boolean isEmpty() {
-		if (this.size() == 0)
-			return true;
-		else
-			return false;
+	else
+	{
+		return false;
 	}
+}
 
-	public void display() {
-		for (int i = tos; i >= 0; i--) {
-			System.out.print(this.data[i] + " "); 
-		}
-		System.out.println();
+void Stack::display()
+{
+	for (int i = tos; i >= 0; i--)
+	{
+		std::wcout << this->data[i] << L" ";
 	}
+	std::wcout << std::endl;
+}
 
-	public int size() {
-		return this.tos + 1;
-	}
-
+int Stack::size()
+{
+	return this->tos + 1;
 }
