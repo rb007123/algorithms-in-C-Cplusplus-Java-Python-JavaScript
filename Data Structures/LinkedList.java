@@ -1,312 +1,220 @@
-
-public class LinkedList {
-	private class Node {
-		int data;
-		Node next;
-
-	}
-
-	private Node head;
-	private Node tail;
-	private int size;
-
-	int size() {
-		return size;
-
-	}
-
-	boolean isEmpty() {
-		return size == 0;
-
-	}
-
-	void display() {
-		for (Node temp = head; temp != null; temp = temp.next) {
-			System.out.print(temp.data + " ");
-		}
-		System.out.println();
-	}
-
-	void addFirst(int value) {
-		if (size == 0) {
-			handleZSize(value);
-			return;
-		}
-		Node temp = new Node();
-		temp.data = value;
-		temp.next = head;
-		this.head = temp;
-		size++;
-
-	}
-
-	void addLast(int value) {
-		if (size == 0) {
-			handleZSize(value);
-			return;
-		}
-		Node temp = new Node();
-		temp.data = value;
-		this.tail.next = temp;
-		this.tail = temp;
-		size++;
-	}
-
-	void handleZSize(int value) {
-		Node temp = new Node();
-		temp.data = value;
-		head = temp;
-		tail = temp;
-		size++;
-		// temp.data=value;
-	} 
-
-	int getFirst() {
-		// Node temp=head;
-		return head.data;
-	}
-
-	int getLast() {
-		// Node temp=tail;
-		return tail.data;
-	}
-
-	int getAt(int idx) {
-		if (size < 0 || idx >= size) {
-			System.out.println("Index Out Of Bounds");
-			return -1;
-		}
-		Node temp = head;
-		for (int i = 0; i < idx; i++) {
-			temp = temp.next;
-		}
-		return temp.data;
-	}
-
-	private Node getNodeAt(int idx) {
-		if (size < 0 || idx >= size) {
-			System.out.println("Index Out Of Bounds");
-			return null;
-		}
-		Node temp = head;
-		for (int i = 0; i < idx; i++) {
-			temp = temp.next;
-		}
-		return temp;
-	}
-
-	void addAt(int value, int idx) {
-		if (idx < 0 || idx >= size) {
-			System.out.println("out of bound");
-			return;
-		}
-		if (idx == 0)
-			addFirst(value);
-		else if (idx == size)
-			addLast(value);
-		else {
-			Node temp = new Node();
-			temp.data = value;
-			Node im1 = getNodeAt(idx - 1);
-			temp.next = im1.next;
-			im1.next = temp;
-		}
-	}
-
-	int removeFirst() {
-
-		if (size == 0) {
-			System.out.println("Underflow");
-			return -1;
-		} else if (size == 1) {
-			return handleSizeOneRemoval();
-
-		} else {
-			Node temp = head;
-			Node ip1 = temp.next;
-			head = ip1;
-			return temp.data;
-		}
-	}
-
-	int removeLast() {
-		if (size == 0) {
-			System.out.println("Underflow");
-			return -1;
-		} else if (size == 1) {
-			return handleSizeOneRemoval();
-
-		} else {
-			Node temp = tail;
-			Node im1 = getNodeAt(size - 2);
-			tail = im1;
-			return temp.data;
-		}
-	}
-
-	int removeAt(int idx) {
-		if (size < 0 || idx >= size) {
-			System.out.println("Index Out Of Bounds");
-			return -1;
-		} else if (size == 0) {
-			System.out.println("Underflow");
-			return -1;
-		} else if (size == 1) {
-			return handleSizeOneRemoval();
-
-		} else {
-			Node im1 = getNodeAt(idx - 1);
-			Node i = im1.next;
-			Node ip1 = i.next;
-			im1.next = ip1;
-			// i.next=null;
-			// This line is not required in java but is in c++.
-			// This due to garbage collection algo of java called mark and sweep
-			return i.data;
-
-		}
-
-	}
-
-	private int handleSizeOneRemoval() {
-		int temp = head.data;
-		head = tail = null;
-		size = 0;
-		return temp;
-	}
-
-	public void reverseDataIteratively() {
-		for (int i = 0; i < size / 2; i++) {
-			Node f = getNodeAt(i);
-			Node s = getNodeAt(size - 1 - i);
-			int tem = f.data;
-			f.data = s.data;
-			s.data = tem;
-		}
-	}
-
-	public void reversePointerIterative() {
-
-		Node prev = null;
-		Node curr = head;
-		while (curr != null) {
-			Node ocnext = curr.next;
-			curr.next = prev;
-			prev = curr;
-			curr = ocnext;
-
-		}
-		Node t = head; 
-		head = tail;
-		tail = t;
-
-	}
-
-	public void displayReverse() {
-		recurseRev(head);
-
-	}
+#include<iostream>
+#include<conio.h>
+#include<stdlib.h>
+using namespace std;
+class Node
+{
+public:
+    int info;
+    Node* next;
+};
+class List:public Node
+{
  
-	private void recurseRev(Node curr) {
-		if (curr == null)
-			return;
-		recurseRev(curr.next);
-		System.out.print(curr.data + " ");
-
-	}
-
-	public void reversePointerrecursive() {
-		reversePointerRecursive(head);
-		Node tem = head;
-		head = tail;
-		tail = tem;
-		tail.next = null;
-	}
-
-	private void reversePointerRecursive(Node curr) {
-		if (curr.next == null)
-			return;
-		reversePointerRecursive(curr.next);
-		curr.next.next = curr;
-
-	}
-
-	public void reverseDataRecursivly() {
-
-		heapMover left = new heapMover();
-		left.node = this.head;
-		reverseDataRecursivly(left, head, 0);
-	}
-
-	private class heapMover {
-		Node node;
-	} 
-
-	private void reverseDataRecursivly(heapMover left, Node right, int counter) {
-		if (right == null)
-			return;
-		reverseDataRecursivly(left, right.next, counter + 1);
-		if (counter >= size / 2) {
-
-			int t = left.node.data;
-			left.node.data = right.data;
-			right.data = t;
-			left.node = left.node.next;
-
-		}
-	}
-
-	public void fold() {
-		heapMover left = new heapMover();
-		left.node = this.head;
-		fold(left, head, 0); 
-	}
-
-	private void fold(heapMover left, Node right, int counter) {
-		if (right == null)
-			return;
-		fold(left, right.next, counter + 1);
-		if (counter > size / 2) {
-
-			Node ocnext = left.node.next;
-			left.node.next = right;
-			right.next = ocnext;
-			left.node = ocnext;
-
-		} else if (counter == size / 2) {
-			tail = right;
-			tail.next = null; 
-		}
-	}
-	public boolean isPalindrome(){
-		heapMover left = new heapMover();
-		left.node = this.head; 
-		return isPalindrome(left, head, 0); 
-	} 
-	private boolean isPalindrome(heapMover left, Node right, int counter){
-		if (right == null)
-			return true; 
-		boolean f=isPalindrome(left, right.next, counter + 1);
-		if (counter >= size / 2) {
-
-			//int t = left.node.data;
-			if(left.node.data != right.data)
-			   {left.node = left.node.next;return f=false;}
-			left.node = left.node.next;
-			   
-		} 
-		return f;   
-	}
-	public int mid(){
-	 Node slow=head;Node fast=head;	
-
-	 while(fast!=null&&fast.next!=null)  
-	 { 
-		 slow=slow.next; 
-		 fast=fast.next.next; 
-		  
-	 }
-	 return slow.data; 
-	}
-
+    Node *first,*last;
+public:
+    List()
+    {
+        first=NULL;
+        last=NULL;
+    }
+    void create();
+    void insert();
+    void delet();
+    void display();
+    void search();
+};
+void List::create()
+{
+    Node *temp;
+    temp=new Node;
+    int n;
+    cout<<"\nEnter an Element:";
+    cin>>n;
+    temp->info=n;
+    temp->next=NULL;
+    if(first==NULL)
+    {
+        first=temp;
+        last=first;
+    }
+ 
+    else
+    {
+        last->next=temp;
+        last=temp;
+    }
+}
+void List::insert()
+{
+    Node *prev,*cur;
+    prev=NULL;
+    cur=first;
+    int count=1,pos,ch,n;
+    Node *temp=new Node;
+    cout<<"\nEnter an Element:";
+    cin>>n;
+    temp->info=n;
+    temp->next=NULL;
+    cout<<"\nINSERT AS\n1:FIRSTNODE\n2:LASTNODE\n3:IN BETWEEN FIRST&LAST NODES";
+    cout<<"\nEnter Your Choice:";
+    cin>>ch;
+    switch(ch)
+    {
+    case 1:
+        temp->next=first;
+        first=temp;
+        break;
+    case 2:
+        last->next=temp;
+        last=temp;
+        break;
+    case 3:
+        cout<<"\nEnter the Position to Insert:";
+        cin>>pos;
+        while(count!=pos)
+        {
+            prev=cur;
+            cur=cur->next;
+            count++;
+        }
+        if(count==pos)
+        {
+            prev->next=temp;
+            temp->next=cur;
+        }
+        else
+            cout<<"\nNot Able to Insert";
+        break;
+ 
+    }
+}
+void List::delet()
+{
+    Node *prev=NULL,*cur=first;
+    int count=1,pos,ch;
+    cout<<"\nDELETE\n1:FIRSTNODE\n2:LASTNODE\n3:IN BETWEEN FIRST&LAST NODES";
+    cout<<"\nEnter Your Choice:";
+    cin>>ch;
+    switch(ch)
+    {
+    case 1:
+        if(first!=NULL)
+        {
+            cout<<"\nDeleted Element is "<<first->info;
+            first=first->next;
+        }
+        else
+            cout<<"\nNot Able to Delete";
+        break;
+    case 2:
+        while(cur!=last)
+        {
+            prev=cur;
+            cur=cur->next;
+        }
+        if(cur==last)
+        {
+            cout<<"\nDeleted Element is: "<<cur->info;
+            prev->next=NULL;
+            last=prev;
+        }
+        else
+            cout<<"\nNot Able to Delete";
+        break;
+    case 3:
+        cout<<"\nEnter the Position of Deletion:";
+        cin>>pos;
+        while(count!=pos)
+        {
+            prev=cur;
+            cur=cur->next;
+            count++;
+        }
+        if(count==pos)
+        {
+            cout<<"\nDeleted Element is: "<<cur->info;
+            prev->next=cur->next;
+        }
+        else
+            cout<<"\nNot Able to Delete";
+        break;
+    }
+}
+void List::display()
+{
+    Node *temp=first;
+    if(temp==NULL)
+    {
+        cout<<"\nList is Empty";
+    }
+    while(temp!=NULL)
+    {
+        cout<<temp->info;
+        cout<<"-->";
+        temp=temp->next;
+    }
+    cout<<"NULL";
+}
+void List::search()
+{
+    int value,pos=0;
+    bool flag=false;
+    if(first==NULL)
+    {
+        cout<<"List is Empty";
+        return;
+    }
+    cout<<"Enter the Value to be Searched:";
+    cin>>value;
+    Node *temp;
+    temp=first;
+    while(temp!=NULL)
+    {
+        pos++;
+        if(temp->info==value)
+        {
+            flag=true;
+            cout<<"Element"<<value<<"is Found at "<<pos<<" Position";
+            return;
+        }
+        temp=temp->next;
+    }
+    if(!flag)
+    {
+        cout<<"Element "<<value<<" not Found in the List";
+    }
+}
+int main()
+{
+    List l;
+    int ch;
+    while(1)
+    {
+        cout<<"\n**** MENU ****";
+        cout<<"\n1:CREATE\n2:INSERT\n3:DELETE\n4:SEARCH\n5:DISPLAY\n6:EXIT\n";
+        cout<<"\nEnter Your Choice:";
+        cin>>ch;
+        switch(ch)
+        {
+        case 1:
+            l.create();
+            break;
+        case 2:
+            l.insert();
+            break;
+        case 3:
+            l.delet();
+            break;
+        case 4:
+            l.search();
+            break;
+        case 5:
+            l.display();
+            break;
+        case 6:
+            return 0;
+        }
+    }
+    return 0;
 }
